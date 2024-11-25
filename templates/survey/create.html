@@ -27,18 +27,61 @@
         </div>
         <h3>Survey Options</h3>
         <p>Add between 2 and 5 options for your survey:</p>
-        {% for option in form.options %}
-            <div class="form-group">
-                {{ option.label }}
-                {{ option(class="form-control") }}
-                {% if option.errors %}
-                    {% for error in option.errors %}
-                        <span class="error">{{ error }}</span>
-                    {% endfor %}
-                {% endif %}
-            </div>
-        {% endfor %}
-        {{ form.submit(class="btn") }}
+        <div id="options-container">
+            {% for option in form.options %}
+                <div class="form-group option-group">
+                    {{ option.label }}
+                    {{ option(class="form-control") }}
+                    {% if option.errors %}
+                        {% for error in option.errors %}
+                            <span class="error">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="button-group">
+            <button type="button" id="add-option" class="btn btn-secondary">Add Option</button>
+            <button type="button" id="remove-option" class="btn btn-secondary">Remove Option</button>
+        </div>
+        {{ form.submit(class="btn btn-primary mt-3") }}
     </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const optionsContainer = document.getElementById('options-container');
+    const addButton = document.getElementById('add-option');
+    const removeButton = document.getElementById('remove-option');
+
+    function updateButtons() {
+        const optionCount = optionsContainer.children.length;
+        addButton.disabled = optionCount >= 5;
+        removeButton.disabled = optionCount <= 2;
+    }
+
+    addButton.addEventListener('click', function() {
+        const optionCount = optionsContainer.children.length;
+        if (optionCount < 5) {
+            const newOption = optionsContainer.children[0].cloneNode(true);
+            const input = newOption.querySelector('input');
+            input.value = '';
+            input.name = `options-${optionCount}`;
+            optionsContainer.appendChild(newOption);
+            updateButtons();
+        }
+    });
+
+    removeButton.addEventListener('click', function() {
+        const optionCount = optionsContainer.children.length;
+        if (optionCount > 2) {
+            optionsContainer.removeChild(optionsContainer.lastChild);
+            updateButtons();
+        }
+    });
+
+    // Initialize button states
+    updateButtons();
+});
+</script>
 {% endblock %}
