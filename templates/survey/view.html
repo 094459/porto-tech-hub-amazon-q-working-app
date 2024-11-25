@@ -6,11 +6,18 @@
 <div class="container">
     <h1>{{ survey.title }}</h1>
     <p>{{ survey.description }}</p>
-    
+
     <div class="survey-meta">
         <p>Created: {{ survey.created_at.strftime('%Y-%m-%d') }}</p>
         <p>Status: {{ 'Active' if survey.is_active else 'Inactive' }}</p>
     </div>
+
+    {% if current_user.is_authenticated and survey.user_id == current_user.user_id %}
+        <a href="{{ url_for('survey.export', survey_id=survey.survey_id) }}" class="btn btn-primary">
+            Export Survey Responses
+        </a>
+    {% endif %}
+    
 
     <h2>Results</h2>
     {% if survey.responses %}
