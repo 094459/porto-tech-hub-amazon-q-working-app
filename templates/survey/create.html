@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Create Survey{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Create New Survey</h1>
+    <form method="POST" class="form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.title.label }}
+            {{ form.title(class="form-control") }}
+            {% if form.title.errors %}
+                {% for error in form.title.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.description.label }}
+            {{ form.description(class="form-control") }}
+            {% if form.description.errors %}
+                {% for error in form.description.errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <h3>Survey Options</h3>
+        <p>Add between 2 and 5 options for your survey:</p>
+        {% for option in form.options %}
+            <div class="form-group">
+                {{ option.label }}
+                {{ option(class="form-control") }}
+                {% if option.errors %}
+                    {% for error in option.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endfor %}
+        {{ form.submit(class="btn") }}
+    </form>
+</div>
+{% endblock %}

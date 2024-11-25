@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}View Survey Results{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ survey.title }}</h1>
+    <p>{{ survey.description }}</p>
+    
+    <div class="survey-meta">
+        <p>Created: {{ survey.created_at.strftime('%Y-%m-%d') }}</p>
+        <p>Status: {{ 'Active' if survey.is_active else 'Inactive' }}</p>
+    </div>
+
+    <h2>Results</h2>
+    {% if survey.responses %}
+        <div class="survey-results">
+            {% for option in survey.options %}
+                <div class="result-item">
+                    <h3>{{ option.option_text }}</h3>
+                    {% with response_count = option.responses|length %}
+                        <p>Responses: {{ response_count }}</p>
+                        <p>Percentage: {{ "%.1f"|format(response_count / survey.responses|length * 100) }}%</p>
+                    {% endwith %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No responses yet.</p>
+    {% endif %}
+
+    <div class="survey-actions">
+        <a href="{{ url_for('survey.list') }}" class="btn">Back to Surveys</a>
+        <a href="{{ url_for('survey.feedback', survey_id=survey.survey_id) }}" class="btn">View Feedback Form</a>
+    </div>
+</div>
+{% endblock %}

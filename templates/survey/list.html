@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Your Surveys</h1>
+{% if surveys %}
+    <ul>
+    {% for survey in surveys %}
+        <li>{{ survey.title }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>You haven't created any surveys yet.</p>
+{% endif %}
+<a href="{{ url_for('survey.create') }}">Create New Survey</a>
+{% endblock %}

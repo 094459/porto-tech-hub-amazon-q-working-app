@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Welcome to Customer Feedback</h1>
+    {% if current_user.is_authenticated %}
+        <p>Create and manage your surveys to gather valuable customer feedback.</p>
+        <div class="actions">
+            <a href="{{ url_for('survey.create') }}" class="btn">Create New Survey</a>
+            <a href="{{ url_for('survey.list') }}" class="btn">View My Surveys</a>
+        </div>
+    {% else %}
+        <p>Please login or register to create and manage surveys.</p>
+        <div class="actions">
+            <a href="{{ url_for('auth.login') }}" class="btn">Login</a>
+            <a href="{{ url_for('auth.register') }}" class="btn">Register</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
